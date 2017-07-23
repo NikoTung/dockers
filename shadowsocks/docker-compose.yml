@@ -1,0 +1,10 @@
+shadowsocks:
+  restart: always
+  image: mritd/shadowsocks
+  environment:
+    SS_CONFIG: "-s 0.0.0.0 -p 6443 -m aes-256-cfb -k mmENDH7NdDQjhz --fast-open"
+    KCP_CONFIG: "-t 127.0.0.1:6443 -l :6500 -mode fast2 -key keysforkcp -crypt aes-128 -mtu 1400 -sndwnd 1024 -rcvwnd 1024 -datashard 5 -parityshard 5 -dscp 46 -nocomp true -acknodelay false -nodelay 0 -interval 20 -resend 2 -nc 1 -sockbuf 4194304 -keepalive 10 -log /var/log/kcptun.log"
+    KCP_FLAG: "true"
+  ports:
+    - "6443:6443"
+    - "6500:6500/udp"
