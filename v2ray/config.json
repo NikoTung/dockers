@@ -1,5 +1,5 @@
 {
-  "log" : {
+  "log": {
     "access": "/var/log/v2ray/access.log",
     "error": "/var/log/v2ray/error.log",
     "loglevel": "debug"
@@ -7,6 +7,7 @@
   "inbound": {
     "port": 10086,
     "protocol": "vmess",
+    "tag": "vmess-tcp-in",
     "settings": {
       "clients": [
         {
@@ -17,6 +18,95 @@
       ]
     }
   },
+  "inboundDetour": [
+    {
+      "port": 10087,
+      "protocol": "vmess",
+      "tag": "vmess-tcp-dymanic-in",
+      "settings": {
+        "clients": [
+          {
+            "id": "23ad6b10-8d1a-40f7-8ad0-e3e35cd38297",
+            "level": 1,
+            "alterId": 64
+          }
+        ],
+        "detour": {
+          "to": "detour-tcp"
+        }
+      }
+    },
+    {
+      "protocol": "shadowsocks",
+      "port": 10088,
+      "tag": "shadowsocks-in",
+      "settings": {
+        "email": "user@niko",
+        "method": "aes-128-cfb",
+        "password": "mmENDH7NdDQjhz",
+        "udp": false,
+        "level": 0,
+        "ota": true
+      }
+    },
+    {
+      "port": 10096,
+      "protocol": "vmess",
+      "tag": "vmess-kcp-in",
+      "settings": {
+        "clients": [
+          {
+            "id": "23ad6b10-8d1a-40f7-8ad0-e3e35cd38297",
+            "level": 1,
+            "alterId": 64
+          }
+        ],
+        "detour": {
+          "to": "detour-kcp"
+        }
+      },
+      "streamSettings": {
+        "network": "kcp"
+      }
+    },
+    {
+      "protocol": "vmess",
+      "port": "10287-10387",
+      "tag": "detour-kcp",
+      "settings": {},
+      "allocate": {
+        "strategy": "random",
+        "concurrency": 3,
+        "refresh": 360
+      },
+      "streamSettings": {
+        "network": "kcp",
+        "kcpSettings": {
+          "mtu": 1350,
+          "tti": 20,
+          "uplinkCapacity": 20,
+          "downlinkCapacity": 1024,
+          "congestion": true,
+          "readBufferSize": 1,
+          "writeBufferSize": 1,
+          "header": {
+            "type": "none"
+          }
+        }
+      }
+    },
+    {
+      "protocol": "vmess",
+      "port": "10186-10286",
+      "tag": "detour-tcp",
+      "settings": {},
+      "allocate": {
+        "strategy": "random",
+        "concurrency": 3,
+        "refresh": 360
+      }
+    }
+  ],
   "outbound": {
     "protocol": "freedom",
     "settings": {}
