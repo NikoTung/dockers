@@ -42,11 +42,10 @@
       "tag": "shadowsocks-in",
       "settings": {
         "email": "user@niko",
-        "method": "aes-128-cfb",
+        "method": "aes-128-gcm",
         "password": "mmENDH7NdDQjhz",
         "udp": false,
-        "level": 0,
-        "ota": true
+        "level": 0
       }
     },
     {
