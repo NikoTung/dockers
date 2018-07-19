@@ -1,0 +1,54 @@
+version: '2'
+
+services:
+  config:
+    image: "apollo-configservice:${TAG}"
+    container_name: apollo-configservice
+    ports:
+      - "18080:8080"
+    restart: always
+    volumes:
+      - /tmp/logs:/opt/logs
+    environment:
+      - JAVA_OPTS=${JAVA_OPTS}
+      - spring_datasource_url=${config_db_url}
+      - spring_datasource_username=${config_db_user}
+      - spring_datasource_password=${config_db_pwd}
+    mem_limit: 1000m
+
+
+  admin:
+    image: "apollo-adminservice:${TAG}"
+    container_name: apollo-adminservice
+    depends_on:
+      - config
+    restart: always
+    volumes:
+      - /tmp/logs:/opt/logs
+    mem_limit: 1000m
+    environment:
+      - JAVA_OPTS=${JAVA_OPTS}
+      - spring_datasource_url=${config_db_url}
+      - spring_datasource_username=${config_db_user}
+      - spring_datasource_password=${config_db_pwd}
+
+  portal:
+    image: "apollo-portal:${TAG}"
+    container_name: apollo-portal
+    restart: always
+    depends_on:
+      - config
+      - admin
+    ports:
+      - "18070:8070"
+    links:
+      - "config:config"
+      - "admin:admin"
+    volumes:
+      - /tmp/logs:/opt/logs
+    environment:
+      - JAVA_OPTS=${JAVA_OPTS} -D${dev_meta} -D${fat_meta} -D${uat_meta} -D${pro_meta}
+      - spring_datasource_url=${portal_db_url}
+      - spring_datasource_username=${portal_db_user}
+      - spring_datasource_password=${portal_db_pwd}
+    mem_limit: 1000m
