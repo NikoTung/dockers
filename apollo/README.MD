@@ -1,6 +1,6 @@
 ## Apollo Docker-compose
 
-This a all in one compose file about [Apollo](https://github.com/ctripcorp/apollo). The configservice ,adminservice and portal communicate through the docker network ,used to deploy on a single machine. It use the [Docker enviroment file](https://docs.docker.com/compose/env-file/) to manage the env, so all the datasources and meta server url can be set in runtime.
+This a all in one compose file about [Apollo](https://github.com/ctripcorp/apollo). The configservice ,adminservice and portal communicate through the docker network ,used to deploy on a single machine. It uses the [Docker enviroment file](https://docs.docker.com/compose/env-file/) to manage the env, so all the datasources and meta server url can be set in runtime.
 
 
 
