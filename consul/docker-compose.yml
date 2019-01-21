@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+
+  consul:
+    image: consul:1.4.0
+    command: consul agent -server -ui  -data-dir=/var/consul -client 0.0.0.0
+#    command: consul agent -server -ui  -bootstrap=true -data-dir=/var/consul -node=server11
+#    environment:
+#      - CONSUL_LOCAL_CONFIG: '{"datacenter":"dc1","server":true,"enable_debug":true}'
+    ports:
+      - "8400:8400"
+      - "8500:8500"
+      - "8600:8600"
+      - "8600:8600/udp"
+    volumes:
+      - /mysql/consul/:/var/consul
